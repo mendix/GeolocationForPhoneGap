@@ -1,6 +1,6 @@
 // Dropdown Select Widget
-dojo.provide('MxwxGeolocation.widget.MxwxGeolocation');
-dojo.declare('MxwxGeolocation.widget.MxwxGeolocation', mxui.widget._WidgetBase, {
+dojo.provide('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap');
+dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget._WidgetBase, {
 
     /* Inputargs
     

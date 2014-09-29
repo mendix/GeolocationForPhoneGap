@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<widget id="MxwxGeolocation.widget.MxwxGeolocation" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
-	<name>Mxwx - PhoneGap / GEO location</name>
+<widget id="GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap" needsEntityContext="true" xmlns="http://www.mendix.com/widget/1.0/">
+	<name>GEO location For PhoneGap</name>
 	<description>Get the GEO location from the phone or tablet.</description>
 	<phonegap enabled="true"/>
 	<icon>
