@@ -128,7 +128,7 @@ dojo.declare('MxwxGeolocation.widget.MxwxGeolocation', mxui.widget._WidgetBase, 
             navigator.geolocation.getCurrentPosition(
                 dojo.hitch(this, this._geolocationSuccess),
                 dojo.hitch(this, this._geolocationFailure),
-                {timeout: 20000});
+                {timeout: 10000});
         }));
 
     },
