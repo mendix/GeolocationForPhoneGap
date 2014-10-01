@@ -15,10 +15,11 @@ dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget
     // internal variables.
 
     // *
-    _result : {},
+    _result : null,
     _button : null,
     _hasStarted : false,
     _obj : null,
+    _objSub : null,
 
     // Externally executed mendix function to create widget.
     startup: function() {
@@ -48,51 +49,43 @@ dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget
         if(typeof obj === 'string'){
             this._contextGuid = obj;
             mx.data.get({
-                guids    : [this._contextGuid],
-                callback : dojo.hitch(this, function(objs) {
-                    this._contextObj = objs;
+                guids    : [obj],
+                callback : dojo.hitch(this, function (objArr) {
+                    if (objArr.length === 1)
+                        this._loadData(objArr[0]);
+                    else
+                        console.log('Could not find the object corresponding to the received object ID.')
                 })
             });
-        } else {
-            this._contextObj = obj;
-        }
-
-        if(obj === null){
+        } else if(obj === null){
             // Sorry no data no show!
             console.log('Whoops... the GEO Location has no data!');
         } else {
             // Attach to data refresh.
-            mx.data.subscribe({
+            if (this._objSub)
+                this.unsubscribe(this._objSub);
+
+            this._objSub = mx.data.subscribe({
                 guid : obj.getGuid(),
-                callback : dojo.hitch(this, this._refresh)
+                callback : dojo.hitch(this, this.update)
             });
             // Load data
-            this._loadData();
+            this._loadData(obj);
         }
-
 
         if(typeof callback !== 'undefined') {
             callback();
         }
     },
 
-    // Internal functions
-    _refresh : function(){
-        //TODO??
-    },
-
     // Loading data
-    _loadData : function(){
-        //TODO??
+    _loadData : function(obj){
+        this._obj = obj;
     },
 
     // Setup
     _setupWX: function() {
         'use strict';
-
-        // MX id.
-        this._mxid = this.mxid;
-        this._mxid_options = 'wx-mxwxgeolocation-options-' + this._mxid;
 
         // Set class for domNode
         dojo.addClass(this.domNode, 'wx-mxwxgeolocation-container');
@@ -107,6 +100,9 @@ dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget
         // Placeholder container
         this._button = mxui.dom.div();
         dojo.addClass(this._button, 'wx-mxwxgeolocation-button btn btn-primary');
+        if (this.buttonClass)
+            dojo.addClass(this.buttonClass);
+        
         dojo.html.set(this._button, this.buttonLabel || 'GEO Location');
 
         // Add to wxnode
@@ -128,7 +124,7 @@ dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget
             navigator.geolocation.getCurrentPosition(
                 dojo.hitch(this, this._geolocationSuccess),
                 dojo.hitch(this, this._geolocationFailure),
-                {timeout: 10000});
+                {timeout: 10000, enableHighAccuracy: true});
         }));
 
     },
@@ -136,24 +132,16 @@ dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget
     _geolocationSuccess : function(position){
         'use strict';
 
-        if(this._result){
-            dojo.html.set(this._result, 'GEO Location latitude : ' + position.coords.latitude + ' | longitude : ' +  position.coords.longitude + ' | altitude : ' + position.coords.altitude);
-        } else {
-            this._result = mxui.dom.div();
-            dojo.html.set(this._result, 'GEO Location latitude : ' + position.coords.latitude + ' | longitude : ' +  position.coords.longitude + ' | altitude : ' + position.coords.altitude);
-            this.domNode.appendChild(this._result);
-
-            this._obj.set(this.latAttr, position.coords.latitude);
-            this._obj.set(this.longAttr, position.coords.longitude);
-            this._executeMicroflow();
-        }
+        this._obj.set(this.latAttr, position.coords.latitude);
+        this._obj.set(this.longAttr, position.coords.longitude);
+        this._executeMicroflow();
     },
 
     _geolocationFailure : function(error){
         'use strict';
 
         console.log('GEO Location failure!');
-        console.log(e);
+        console.log(error.message);
 
         if(this._result){
             dojo.html.set(this._result, 'GEO Location failure...' );
