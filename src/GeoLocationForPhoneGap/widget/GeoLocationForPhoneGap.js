@@ -30,8 +30,6 @@ dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget
 
         this._hasStarted = true;
 
-        // Load CSS ... automaticly from ui directory
-
         // Setup widget
         this._setupWX();
 
@@ -88,7 +86,7 @@ dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget
         'use strict';
 
         // Set class for domNode
-        dojo.addClass(this.domNode, 'wx-mxwxgeolocation-container');
+        dojo.addClass(this.domNode, 'wx-geolocation-container');
 
         // Empty domnode of this and appand new input
         dojo.empty(this.domNode);
@@ -101,7 +99,7 @@ dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget
         this._button = mxui.dom.div();
         dojo.addClass(this._button, 'wx-mxwxgeolocation-button btn btn-primary');
         if (this.buttonClass)
-            dojo.addClass(this.buttonClass);
+            dojo.addClass(this._button, this.buttonClass);
         
         dojo.html.set(this._button, this.buttonLabel || 'GEO Location');
 
