@@ -9,7 +9,7 @@
 
 	<properties>
 		<property key="buttonLabel" type="string" required="true">
-            <caption>Button</caption>
+            <caption>Label</caption>
             <category>Button</category>
             <description></description> 
         </property>
