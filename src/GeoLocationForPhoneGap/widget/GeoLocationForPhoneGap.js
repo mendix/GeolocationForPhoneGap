@@ -115,7 +115,7 @@ dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget
         var me = this;
        
         // Attach only one event to dropdown list.
-        dojo.connect( this._button, "touchstart", dojo.hitch(this, function(evt){
+        dojo.connect( this._button, "click", dojo.hitch(this, function(evt){
             console.log('GEO Location start getting location.');
 
             // The camera function has a success, failure and a reference to this.
