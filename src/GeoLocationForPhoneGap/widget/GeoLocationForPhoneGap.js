@@ -37,18 +37,7 @@ define([
         },
 
         update : function (obj, callback) {
-            if(typeof obj === 'string'){
-                this._contextGuid = obj;
-                mx.data.get({
-                    guids    : [obj],
-                    callback : function (objArr) {
-                        if (objArr.length === 1)
-                            this._loadData(objArr[0]);
-                        else
-                            console.log('Could not find the object corresponding to the received object ID.');
-                    }
-                }, this);
-            } else if(obj === null){
+            if(obj === null){
                 // Sorry no data no show!
                 console.log('Whoops... the GEO Location has no data!');
             } else {
