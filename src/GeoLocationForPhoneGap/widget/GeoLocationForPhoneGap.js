@@ -1,165 +1,163 @@
-// Dropdown Select Widget
-dojo.provide('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap');
-dojo.declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', mxui.widget._WidgetBase, {
+define([
+    "mxui/widget/_WidgetBase", "mxui/dom", "dojo/dom-class", "dojo/dom-construct",
+    "dojo/_base/declare"
+], function(_WidgetBase, mxuiDom, dojoClass, dojoConstruct, declare) {
 
-    /* Inputargs
-    
-    this.buttonLabel : string,
-    this.latAttr : float,
-    this.longAttr : float,
-    this.onchangemf : string
+    return declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', _WidgetBase, {
 
-    */
+        buttonLabel: "",
+        latAttr: 0.0,
+        longAttr: 0.0,
+        onchangemf: "",
 
-    // Coding guideline, internal variables start with '_'.
-    // internal variables.
+        _result : null,
+        _button : null,
+        _hasStarted : false,
+        _obj : null,
+        _objSub : null,
 
-    // *
-    _result : null,
-    _button : null,
-    _hasStarted : false,
-    _obj : null,
-    _objSub : null,
+        // Externally executed mendix function to create widget.
+        startup: function() {
+            'use strict';
 
-    // Externally executed mendix function to create widget.
-    startup: function() {
-        'use strict';
+            if (this._hasStarted)
+                return;
 
-        if (this._hasStarted)
-            return;
+            this._hasStarted = true;
 
-        this._hasStarted = true;
+            // Setup widget
+            this._setupWX();
 
-        // Setup widget
-        this._setupWX();
+            // Create childnodes
+            this._createChildnodes();
 
-        // Create childnodes
-        this._createChildnodes();
+            // Setup events
+            this._setupEvents();
 
-        // Setup events
-        this._setupEvents();
+        },
 
-    },
+        update : function (obj, callback) {
+            'use strict';
 
-    update : function (obj, callback) {
-        'use strict';
+            if(typeof obj === 'string'){
+                this._contextGuid = obj;
+                mx.data.get({
+                    guids    : [obj],
+                    callback : function (objArr) {
+                        if (objArr.length === 1)
+                            this._loadData(objArr[0]);
+                        else
+                            console.log('Could not find the object corresponding to the received object ID.');
+                    }
+                }, this);
+            } else if(obj === null){
+                // Sorry no data no show!
+                console.log('Whoops... the GEO Location has no data!');
+            } else {
+                // Attach to data refresh.
+                if (this._objSub)
+                    this.unsubscribe(this._objSub);
 
-        if(typeof obj === 'string'){
-            this._contextGuid = obj;
-            mx.data.get({
-                guids    : [obj],
-                callback : dojo.hitch(this, function (objArr) {
-                    if (objArr.length === 1)
-                        this._loadData(objArr[0]);
-                    else
-                        console.log('Could not find the object corresponding to the received object ID.')
-                })
+                this._objSub = mx.data.subscribe({
+                    guid: obj.getGuid(),
+                    callback: this.update
+                }, this);
+                // Load data
+                this._loadData(obj);
+            }
+
+            if(typeof callback !== 'undefined') {
+                callback();
+            }
+        },
+
+        // Loading data
+        _loadData : function(obj){
+            this._obj = obj;
+        },
+
+        // Setup
+        _setupWX: function() {
+            'use strict';
+
+            // Set class for domNode
+            dojoClass.add(this.domNode, 'wx-geolocation-container');
+
+            // Empty domnode of this and appand new input
+            dojoConstruct.empty(this.domNode);
+        },
+
+        _createChildnodes: function() {
+            'use strict';
+
+            // Placeholder container
+            this._button = mxuiDom.create("div", {
+                'class': 'wx-mxwxgeolocation-button btn btn-primary'
             });
-        } else if(obj === null){
-            // Sorry no data no show!
-            console.log('Whoops... the GEO Location has no data!');
-        } else {
-            // Attach to data refresh.
-            if (this._objSub)
-                this.unsubscribe(this._objSub);
+            if (this.buttonClass)
+                dojoClass.add(this._button, this.buttonClass);
 
-            this._objSub = mx.data.subscribe({
-                guid : obj.getGuid(),
-                callback : dojo.hitch(this, this.update)
+            this._button.textContent = this.buttonLabel || 'GEO Location';
+
+            // Add to wxnode
+            this.domNode.appendChild(this._button);
+        },
+
+        // Internal event setup.
+        _setupEvents : function() {
+            'use strict';
+
+            this.connect(this._button, "click", function(evt) {
+                console.log('GEO Location start getting location.');
+
+                navigator.geolocation.getCurrentPosition(
+                    this._geolocationSuccess.bind(this),
+                    this._geolocationFailure.bind(this), {
+                        timeout: 10000,
+                        enableHighAccuracy: true
+                    });
             });
-            // Load data
-            this._loadData(obj);
+        },
+
+        _geolocationSuccess : function(position){
+            'use strict';
+
+            this._obj.set(this.latAttr, position.coords.latitude);
+            this._obj.set(this.longAttr, position.coords.longitude);
+            this._executeMicroflow();
+        },
+
+        _geolocationFailure : function(error){
+            'use strict';
+
+            console.log('GEO Location failure!');
+            console.log(error.message);
+
+            if(this._result){
+                this._result.textContent = 'GEO Location failure...';
+            } else {
+                this._result = mxuiDom.create("div");
+                this._result.textContent = 'GEO Location failure...';
+                this.domNode.appendChild(this._result);
+            }
+        },
+
+        _executeMicroflow : function () {
+            'use strict';
+
+            if (this.onchangemf && this._obj) {
+                mx.data.action({
+                    params: {
+                        actionname: this.onchangemf,
+                        applyto: 'selection',
+                        guids: [this._obj.getGuid()]
+                    },
+                    error: function() {},
+                });
+            }
         }
-
-        if(typeof callback !== 'undefined') {
-            callback();
-        }
-    },
-
-    // Loading data
-    _loadData : function(obj){
-        this._obj = obj;
-    },
-
-    // Setup
-    _setupWX: function() {
-        'use strict';
-
-        // Set class for domNode
-        dojo.addClass(this.domNode, 'wx-geolocation-container');
-
-        // Empty domnode of this and appand new input
-        dojo.empty(this.domNode);
-    },
-
-    _createChildnodes: function() {
-        'use strict';
-
-        // Placeholder container
-        this._button = mxui.dom.div();
-        dojo.addClass(this._button, 'wx-mxwxgeolocation-button btn btn-primary');
-        if (this.buttonClass)
-            dojo.addClass(this._button, this.buttonClass);
-        
-        dojo.html.set(this._button, this.buttonLabel || 'GEO Location');
-
-        // Add to wxnode
-        this.domNode.appendChild(this._button);
-    },
-
-    // Internal event setup.
-    _setupEvents : function() {
-        'use strict';
-
-        // Scope is now inside me variable.
-        var me = this;
-       
-        // Attach only one event to dropdown list.
-        dojo.connect( this._button, "click", dojo.hitch(this, function(evt){
-            console.log('GEO Location start getting location.');
-
-            // The camera function has a success, failure and a reference to this.
-            navigator.geolocation.getCurrentPosition(
-                dojo.hitch(this, this._geolocationSuccess),
-                dojo.hitch(this, this._geolocationFailure),
-                {timeout: 10000, enableHighAccuracy: true});
-        }));
-
-    },
-
-    _geolocationSuccess : function(position){
-        'use strict';
-
-        this._obj.set(this.latAttr, position.coords.latitude);
-        this._obj.set(this.longAttr, position.coords.longitude);
-        this._executeMicroflow();
-    },
-
-    _geolocationFailure : function(error){
-        'use strict';
-
-        console.log('GEO Location failure!');
-        console.log(error.message);
-
-        if(this._result){
-            dojo.html.set(this._result, 'GEO Location failure...' );
-        } else {
-            this._result = mxui.dom.div();
-            dojo.html.set(this._result, 'GEO Location failure...' );
-            this.domNode.appendChild(this._result);
-        }
-    },
-
-    _executeMicroflow : function () {
-        'use strict';
-
-        if (this.onchangemf && this._obj) {
-            mx.processor.xasAction({
-                error       : function() {},
-                actionname  : this.onchangemf,
-                applyto     : 'selection',
-                guids       : [this._obj.getGuid()]
-            });
-        }
-    }
+    });
 });
+
+// Compatibility with older mendix versions.
+require([ "GeoLocationForPhoneGap/widget/GeoLocationForPhoneGap" ], function() {});
