@@ -3,6 +3,8 @@ define([
     "dojo/_base/declare"
 ], function(_WidgetBase, mxuiDom, dojoClass, dojoConstruct, declare) {
 
+    "use strict";
+
     return declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', _WidgetBase, {
 
         buttonLabel: "",
@@ -18,8 +20,6 @@ define([
 
         // Externally executed mendix function to create widget.
         startup: function() {
-            'use strict';
-
             if (this._hasStarted)
                 return;
 
@@ -37,8 +37,6 @@ define([
         },
 
         update : function (obj, callback) {
-            'use strict';
-
             if(typeof obj === 'string'){
                 this._contextGuid = obj;
                 mx.data.get({
@@ -78,8 +76,6 @@ define([
 
         // Setup
         _setupWX: function() {
-            'use strict';
-
             // Set class for domNode
             dojoClass.add(this.domNode, 'wx-geolocation-container');
 
@@ -88,8 +84,6 @@ define([
         },
 
         _createChildnodes: function() {
-            'use strict';
-
             // Placeholder container
             this._button = mxuiDom.create("div", {
                 'class': 'wx-mxwxgeolocation-button btn btn-primary'
@@ -105,8 +99,6 @@ define([
 
         // Internal event setup.
         _setupEvents : function() {
-            'use strict';
-
             this.connect(this._button, "click", function(evt) {
                 console.log('GEO Location start getting location.');
 
@@ -120,16 +112,12 @@ define([
         },
 
         _geolocationSuccess : function(position){
-            'use strict';
-
             this._obj.set(this.latAttr, position.coords.latitude);
             this._obj.set(this.longAttr, position.coords.longitude);
             this._executeMicroflow();
         },
 
         _geolocationFailure : function(error){
-            'use strict';
-
             console.log('GEO Location failure!');
             console.log(error.message);
 
@@ -143,8 +131,6 @@ define([
         },
 
         _executeMicroflow : function () {
-            'use strict';
-
             if (this.onchangemf && this._obj) {
                 mx.data.action({
                     params: {
