@@ -50,18 +50,11 @@ define([
                     guid: obj.getGuid(),
                     callback: this.update
                 }, this);
-                // Load data
-                this._loadData(obj);
+
+                this._obj = obj;
             }
 
-            if(typeof callback !== 'undefined') {
-                callback();
-            }
-        },
-
-        // Loading data
-        _loadData : function(obj){
-            this._obj = obj;
+            if (callback) callback();
         },
 
         // Setup
