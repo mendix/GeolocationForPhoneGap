@@ -8,7 +8,7 @@
 	</icon>
 	<phonegap enabled="true"/>
 	<properties>
-		<property key="buttonLabel" type="string" required="true">
+	    <property key="buttonLabel" type="string" required="true">
             <caption>Label</caption>
             <category>Button</category>
             <description></description> 
@@ -18,11 +18,12 @@
             <category>Button</category>
             <description></description> 
         </property>
-		<property key="latAttr" type="attribute" required="true">
+	    <property key="latAttr" type="attribute" required="true">
             <caption>Latitude Attribute</caption>
             <category>Data source</category>
             <description></description> 
             <attributeTypes>
+                <attributeType name="Decimal"/>
                 <attributeType name="Float"/>
             </attributeTypes>
         </property>
@@ -31,6 +32,7 @@
             <category>Data source</category>
             <description></description> 
             <attributeTypes>
+                <attributeType name="Decimal"/>
                 <attributeType name="Float"/>
             </attributeTypes>
         </property>
