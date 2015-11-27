@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <package xmlns="http://www.mendix.com/package/1.0/">
-	<clientModule name="Geo Location For PhoneGap" version="2.2" xmlns="http://www.mendix.com/clientModule/1.0/">
-		<widgetFiles>
-			<widgetFile path="GeoLocationForPhoneGap/GeoLocationForPhoneGap.xml"/>
-		</widgetFiles>
-		<files>
-			<file path="GeoLocationForPhoneGap/widget/"/>
-		</files>
-	</clientModule>
+    <clientModule xmlns="http://www.mendix.com/clientModule/1.0/"
+                  name="Geo Location For PhoneGap" version="2.2">
+        <widgetFiles>
+            <widgetFile path="GeoLocationForPhoneGap/GeoLocationForPhoneGap.xml"/>
+        </widgetFiles>
+        <files>
+            <file path="GeoLocationForPhoneGap/widget/"/>
+        </files>
+    </clientModule>
 </package>

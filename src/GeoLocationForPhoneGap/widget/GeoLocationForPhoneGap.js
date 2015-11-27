@@ -2,7 +2,6 @@ define([
     "mxui/widget/_WidgetBase", "mxui/dom", "dojo/dom-class", "dojo/dom-construct",
     "dojo/_base/declare"
 ], function(_WidgetBase, mxuiDom, dojoClass, dojoConstruct, declare) {
-
     "use strict";
 
     return declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', _WidgetBase, {
@@ -12,10 +11,10 @@ define([
         longAttr: 0.0,
         onchangemf: "",
 
-        _result : null,
-        _button : null,
-        _hasStarted : false,
-        _obj : null,
+        _result: null,
+        _button: null,
+        _hasStarted: false,
+        _obj: null,
 
         // Externally executed mendix function to create widget.
         startup: function() {
@@ -35,7 +34,7 @@ define([
 
         },
 
-        update : function(obj, callback) {
+        update: function(obj, callback) {
             this._obj = obj;
 
             if (callback) callback();
@@ -65,7 +64,7 @@ define([
         },
 
         // Internal event setup.
-        _setupEvents : function() {
+        _setupEvents: function() {
             this.connect(this._button, "click", function(evt) {
                 console.log('GEO Location start getting location.');
 
@@ -78,17 +77,17 @@ define([
             });
         },
 
-        _geolocationSuccess : function(position){
+        _geolocationSuccess: function(position) {
             this._obj.set(this.latAttr, position.coords.latitude);
             this._obj.set(this.longAttr, position.coords.longitude);
             this._executeMicroflow();
         },
 
-        _geolocationFailure : function(error){
+        _geolocationFailure: function(error) {
             console.log('GEO Location failure!');
             console.log(error.message);
 
-            if(this._result){
+            if (this._result) {
                 this._result.textContent = 'GEO Location failure...';
             } else {
                 this._result = mxuiDom.create("div");
@@ -97,13 +96,13 @@ define([
             }
         },
 
-        _executeMicroflow : function () {
+        _executeMicroflow: function() {
             if (this.onchangemf && this._obj) {
                 mx.data.action({
                     params: {
                         actionname: this.onchangemf,
                         applyto: 'selection',
-                        guids: [this._obj.getGuid()]
+                        guids: [ this._obj.getGuid() ]
                     },
                     error: function() {},
                 });
