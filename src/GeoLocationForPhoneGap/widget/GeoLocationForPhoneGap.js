@@ -37,14 +37,15 @@ define([
         },
 
         update : function (obj, callback) {
-            if(obj === null){
+            if (this._objSub) {
+                this.unsubscribe(this._objSub);
+                this._objSub = null;
+            }
+
+            if (obj === null){
                 // Sorry no data no show!
                 console.log('Whoops... the GEO Location has no data!');
             } else {
-                // Attach to data refresh.
-                if (this._objSub)
-                    this.unsubscribe(this._objSub);
-
                 this._objSub = mx.data.subscribe({
                     guid: obj.getGuid(),
                     callback: this.update
