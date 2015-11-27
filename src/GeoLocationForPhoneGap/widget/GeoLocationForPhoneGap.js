@@ -16,7 +16,6 @@ define([
         _button : null,
         _hasStarted : false,
         _obj : null,
-        _objSub : null,
 
         // Externally executed mendix function to create widget.
         startup: function() {
@@ -36,23 +35,8 @@ define([
 
         },
 
-        update : function (obj, callback) {
-            if (this._objSub) {
-                this.unsubscribe(this._objSub);
-                this._objSub = null;
-            }
-
-            if (obj === null){
-                // Sorry no data no show!
-                console.log('Whoops... the GEO Location has no data!');
-            } else {
-                this._objSub = mx.data.subscribe({
-                    guid: obj.getGuid(),
-                    callback: this.update
-                }, this);
-
-                this._obj = obj;
-            }
+        update : function(obj, callback) {
+            this._obj = obj;
 
             if (callback) callback();
         },
