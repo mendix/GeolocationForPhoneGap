@@ -4,7 +4,7 @@ define([
 ], function(_WidgetBase, mxuiDom, dojoClass, dojoConstruct, declare) {
     "use strict";
 
-    return declare('GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap', _WidgetBase, {
+    return declare("GeoLocationForPhoneGap.widget.GeoLocationForPhoneGap", _WidgetBase, {
 
         buttonLabel: "",
         latAttr: 0.0,
@@ -43,7 +43,7 @@ define([
         // Setup
         _setupWX: function() {
             // Set class for domNode
-            dojoClass.add(this.domNode, 'wx-geolocation-container');
+            dojoClass.add(this.domNode, "wx-geolocation-container");
 
             // Empty domnode of this and appand new input
             dojoConstruct.empty(this.domNode);
@@ -52,12 +52,12 @@ define([
         _createChildnodes: function() {
             // Placeholder container
             this._button = mxuiDom.create("div", {
-                'class': 'wx-mxwxgeolocation-button btn btn-primary'
+                "class": "wx-mxwxgeolocation-button btn btn-primary"
             });
             if (this.buttonClass)
                 dojoClass.add(this._button, this.buttonClass);
 
-            this._button.textContent = this.buttonLabel || 'GEO Location';
+            this._button.textContent = this.buttonLabel || "GEO Location";
 
             // Add to wxnode
             this.domNode.appendChild(this._button);
@@ -66,7 +66,7 @@ define([
         // Internal event setup.
         _setupEvents: function() {
             this.connect(this._button, "click", function(evt) {
-                console.log('GEO Location start getting location.');
+                console.log("GEO Location start getting location.");
 
                 navigator.geolocation.getCurrentPosition(
                     this._geolocationSuccess.bind(this),
@@ -84,14 +84,14 @@ define([
         },
 
         _geolocationFailure: function(error) {
-            console.log('GEO Location failure!');
+            console.log("GEO Location failure!");
             console.log(error.message);
 
             if (this._result) {
-                this._result.textContent = 'GEO Location failure...';
+                this._result.textContent = "GEO Location failure...";
             } else {
                 this._result = mxuiDom.create("div");
-                this._result.textContent = 'GEO Location failure...';
+                this._result.textContent = "GEO Location failure...";
                 this.domNode.appendChild(this._result);
             }
         },
@@ -101,7 +101,7 @@ define([
                 mx.data.action({
                     params: {
                         actionname: this.onchangemf,
-                        applyto: 'selection',
+                        applyto: "selection",
                         guids: [ this._obj.getGuid() ]
                     },
                     error: function() {},
