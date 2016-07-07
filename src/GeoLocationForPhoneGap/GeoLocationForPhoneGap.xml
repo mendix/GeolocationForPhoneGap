@@ -7,7 +7,7 @@
     </icon>
     <phonegap enabled="true"/>
     <properties>
-        <property key="buttonLabel" type="string" required="true">
+        <property key="buttonLabel" type="translatableString" required="true">
             <caption>Label</caption>
             <category>Button</category>
             <description></description> 
