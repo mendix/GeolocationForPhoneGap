@@ -78,8 +78,8 @@ define([
         },
 
         _geolocationSuccess: function(position) {
-            this._obj.set(this.latAttr, position.coords.latitude);
-            this._obj.set(this.longAttr, position.coords.longitude);
+            this._obj.set(this.latAttr, +position.coords.latitude.toFixed(8));
+            this._obj.set(this.longAttr, +position.coords.longitude.toFixed(8));
             this._executeMicroflow();
         },
 
