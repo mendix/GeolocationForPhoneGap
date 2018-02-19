@@ -10,7 +10,11 @@
         <property key="buttonLabel" type="translatableString" required="true">
             <caption>Label</caption>
             <category>Button</category>
-            <description></description> 
+            <description/>
+            <translations>
+                <translation lang="en_US">Location</translation>
+                <translation lang="nl_NL">Plaats</translation>
+            </translations>
         </property>
         <property key="buttonClass" type="string" required="false">
             <caption>Class</caption>
