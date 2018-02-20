@@ -10,17 +10,21 @@
         <property key="buttonLabel" type="translatableString" required="true">
             <caption>Label</caption>
             <category>Button</category>
-            <description></description> 
+            <description/>
+            <translations>
+                <translation lang="en_US">Location</translation>
+                <translation lang="nl_NL">Locatie</translation>
+            </translations>
         </property>
         <property key="buttonClass" type="string" required="false">
             <caption>Class</caption>
             <category>Button</category>
-            <description></description> 
+            <description/>
         </property>
         <property key="latAttr" type="attribute" required="true">
             <caption>Latitude Attribute</caption>
             <category>Data source</category>
-            <description></description> 
+            <description/>
             <attributeTypes>
                 <attributeType name="Decimal"/>
                 <attributeType name="Float"/>
@@ -29,7 +33,7 @@
         <property key="longAttr" type="attribute" required="true">
             <caption>Longitude Attribute</caption>
             <category>Data source</category>
-            <description></description> 
+            <description/>
             <attributeTypes>
                 <attributeType name="Decimal"/>
                 <attributeType name="Float"/>
@@ -38,7 +42,7 @@
         <property key="onchangemf" type="microflow" required="false">
             <caption>On change microflow</caption>
             <category>Events</category>
-            <description></description> 
+            <description/>
             <returnType type="Void"/>
         </property>
     </properties>
