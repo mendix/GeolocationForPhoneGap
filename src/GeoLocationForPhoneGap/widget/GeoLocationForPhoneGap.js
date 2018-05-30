@@ -10,6 +10,7 @@ define([
         latAttr: 0.0,
         longAttr: 0.0,
         onchangemf: "",
+        onChangeNanoflow: null,
 
         _result: null,
         _button: null,
@@ -18,8 +19,9 @@ define([
 
         // Externally executed mendix function to create widget.
         startup: function() {
-            if (this._hasStarted)
+            if (this._hasStarted) {
                 return;
+            }
 
             this._hasStarted = true;
 
@@ -37,7 +39,9 @@ define([
         update: function(obj, callback) {
             this._obj = obj;
 
-            if (callback) callback();
+            if (callback) {
+                callback();
+            }
         },
 
         // Setup
@@ -54,8 +58,9 @@ define([
             this._button = mxuiDom.create("div", {
                 "class": "wx-mxwxgeolocation-button btn btn-primary"
             });
-            if (this.buttonClass)
+            if (this.buttonClass) {
                 dojoClass.add(this._button, this.buttonClass);
+            }
 
             this._button.textContent = this.buttonLabel || "GEO Location";
 
@@ -80,7 +85,7 @@ define([
         _geolocationSuccess: function(position) {
             this._obj.set(this.latAttr, +position.coords.latitude.toFixed(8));
             this._obj.set(this.longAttr, +position.coords.longitude.toFixed(8));
-            this._executeMicroflow();
+            this._executeAction();
         },
 
         _geolocationFailure: function(error) {
@@ -96,7 +101,7 @@ define([
             }
         },
 
-        _executeMicroflow: function() {
+        _executeAction: function() {
             if (this.onchangemf && this._obj) {
                 mx.data.action({
                     params: {
@@ -104,7 +109,21 @@ define([
                         applyto: "selection",
                         guids: [ this._obj.getGuid() ]
                     },
-                    error: function() {},
+                    origin: this.mxform,
+                    error: function (error) {
+                        mx.ui.error("An error occurred while executing the " + this.onchangemf + ": " + error.message);
+                    },
+                });
+            }
+
+            if (this.onChangeNanoflow.nanoflow && this.mxcontext) {
+                mx.data.callNanoflow({
+                    nanoflow: this.onChangeNanoflow,
+                    origin: this.mxform,
+                    context: this.mxcontext,
+                    error: function (error) {
+                        mx.ui.error("An error occurred while executing the on change nanoflow: " + error.message);
+                    }
                 });
             }
         }

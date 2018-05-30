@@ -2,7 +2,7 @@
 
 The Geolocation widget enables PhoneGap native geolocation functionality within
 your Mendix mobile application. This is a widget that will be functional from
-Mendix 5.14.
+Mendix 7.13.1.
 
 ## Contributing
 
@@ -39,5 +39,11 @@ The attribute on the dataview object where the longitude should be set to.
 #### On change microflow
 
 An optional microflow that will be triggered once the location has been
+retrieved. It is advised to use this at least with a Refresh in client call, to
+make sure the UI is updated correctly.
+
+#### On change nanoflow
+
+An optional nanoflow that will be triggered once the location has been
 retrieved. It is advised to use this at least with a Refresh in client call, to
 make sure the UI is updated correctly.
