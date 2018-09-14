@@ -49,5 +49,10 @@
             <description>The nanoflow to call when the location has been retrieved</description>
             <returnType type="Void"/>
         </property>
+        <property key="enableHighAccuracy" type="boolean" defaultValue="true">
+            <caption>High accuracy</caption>
+            <category>Behavior</category>
+            <description>Provides a hint that the application needs the best possible results. By default, the device attempts to retrieve a Position using network-based methods. Setting this property to true tells the framework to use more accurate methods, such as satellite positioning.</description>
+        </property>
     </properties>
 </widget>

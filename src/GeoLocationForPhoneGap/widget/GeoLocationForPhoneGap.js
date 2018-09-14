@@ -77,7 +77,7 @@ define([
                     this._geolocationSuccess.bind(this),
                     this._geolocationFailure.bind(this), {
                         timeout: 10000,
-                        enableHighAccuracy: true
+                        enableHighAccuracy: this.enableHighAccuracy
                     });
             });
         },
