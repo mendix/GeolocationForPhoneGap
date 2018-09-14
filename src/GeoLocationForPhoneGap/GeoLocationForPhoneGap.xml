@@ -54,5 +54,10 @@
             <category>Behavior</category>
             <description>Provides a hint that the application needs the best possible results. By default, the device attempts to retrieve a Position using network-based methods. Setting this property to true tells the framework to use more accurate methods, such as satellite positioning.</description>
         </property>
+        <property key="getPositionOnLoad" type="boolean" defaultValue="false">
+            <caption>Locate on load</caption>
+            <category>Behavior</category>
+            <description>Automatically get the current location when the widget is loaded.</description>
+        </property>
     </properties>
 </widget>

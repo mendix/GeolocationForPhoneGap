@@ -39,6 +39,11 @@ define([
         update: function(obj, callback) {
             this._obj = obj;
 
+            // If configured, automatically update geolocation
+            if (this.getPositionOnLoad) {
+                this._getCurrentPosition();
+            }
+
             if (callback) {
                 callback();
             }
@@ -70,16 +75,18 @@ define([
 
         // Internal event setup.
         _setupEvents: function() {
-            this.connect(this._button, "click", function(evt) {
-                console.log("GEO Location start getting location.");
+            this.connect(this._button, "click", this._getCurrentPosition);
+        },
 
-                navigator.geolocation.getCurrentPosition(
-                    this._geolocationSuccess.bind(this),
-                    this._geolocationFailure.bind(this), {
-                        timeout: 10000,
-                        enableHighAccuracy: this.enableHighAccuracy
-                    });
-            });
+        _getCurrentPosition: function() {
+            console.log("GEO Location start getting location.");
+
+            navigator.geolocation.getCurrentPosition(
+                this._geolocationSuccess.bind(this),
+                this._geolocationFailure.bind(this), {
+                    timeout: 10000,
+                    enableHighAccuracy: this.enableHighAccuracy
+                });
         },
 
         _geolocationSuccess: function(position) {
