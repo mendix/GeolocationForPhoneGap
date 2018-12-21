@@ -7,7 +7,7 @@ Mendix 7.13.1.
 ## Contributing
 
 For more information on contributing to this repository visit
-[Contributing to a GitHub repository](https://world.mendix.com/display/howto50/Contributing+to+a+GitHub+repository).
+[Contributing to a GitHub repository](https://docs.mendix.com/howto/collaboration-requirements-management/contribute-to-a-github-repository).
 
 ## Configuration
 
