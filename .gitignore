@@ -8,3 +8,5 @@ test/.project
 *.bak
 .idea/
 *.mws
+node_modules/
+dist/
